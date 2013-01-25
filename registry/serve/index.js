@@ -2,8 +2,37 @@
 var socketInfo;
 //env
 var env = {
-    port: 8080
-}
+    port: 8080,
+    address: "127.0.0.1"
+};
+
+var onAccept = function(acceptInfo) {
+    console.log("ACCEPT", acceptInfo)
+    //  Read in the data
+    socket.read(acceptInfo.socketId, function(readInfo) {
+        console.log("READ", readInfo);
+        // Parse the request.
+        var data = arrayBufferToString(readInfo.data);
+        console.log("the data is: ",readInfo.data);
+            if(data.indexOf("GET ") == 0) {
+                // we can only deal with GET requests
+                var uriEnd =  data.indexOf(" ", 4);
+                if(uriEnd < 0) { /* throw a wobbler */ return; }
+                var uri = data.substring(4, uriEnd);
+                console.log('uri is: ' + uri);
+                var file = {
+                    type: 'text/plain',
+                    data: "hello, world :)"
+                };
+            serve.write(acceptInfo.socketId,file);
+        }
+        else {
+            // Throw an error
+            throw "wtf";
+            socket.destroy(acceptInfo.socketId); 
+        }
+    }); 
+};
 
 //serve obj
 var serve = function() {};
@@ -11,8 +40,8 @@ serve.stop = function() {
     socket.destroy(socketInfo.socketId);
 }
 
-serve.write = function(code,file) {
-    var fileBUffer = str2buf(file.data);
+serve.write = function(socketId,file) {
+    var fileBuffer = str2buf(file.data);
     var typeMap = {
         '.js': 'application/javascript',
         '.txt.': 'text/plain'
@@ -21,12 +50,12 @@ serve.write = function(code,file) {
     if(!file.type in typeMap) {
         throw "We can't serve this type (...yet)";
     }
-    var header = stringToUInt8Array("HTTP:/1.0 200 OK\nContent-length: " + file.data.length + "\nContent-type:" + typeMap(file.type) + '\n\n');
+    var header = stringToUint8Array("HTTP:/1.0 200 OK\nContent-length: " + file.data.length + "\nContent-type:" + typeMap[file.type] + '\n\n');
     var outputBuffer = new ArrayBuffer(header.byteLength + fileBuffer.byteLength);
     var view = new Uint8Array(outputBuffer);
     view.set(header,0);
     view.set(new Uint8Array(fileBuffer), header.byteLength);
-    socket.write(socketInfo.socketId, outputBUffer, function(writeInfO) {
+    socket.write(socketId, outputBuffer, function(writeInfo) {
         console.log("WRITE", writeInfo);
     	socket.destroy(socketId); 
 		socket.accept(socketInfo.socketId, onAccept);
@@ -117,21 +146,22 @@ var initSocket = function() {
     socket = chrome.experimental.socket || chrome.socket;
     socket.create("tcp", {}, function(_socketInfo) {
       socketInfo = _socketInfo;
-      socket.listen(socketInfo.socketId, hosts.value, env.port, 20, function(result) {
+      socket.listen(socketInfo.socketId, env.address, env.port, 20, function(result) {
         console.log("LISTENING:", result);
         socket.accept(socketInfo.socketId, onAccept);
       });
     });
     
-    socket.getNetworkList(function(interfaces) {
+    /*socket.getNetworkList(function(interfaces) {
     for(var i in interfaces) {
-      var interface = interfaces[i];
-      var opt = document.createElement("option");
-      opt.value = interface.address;
-      opt.innerText = interface.name + " - " + interface.address;
-      hosts.appendChild(opt);
+        console.log(interfaces[i]);
+      //var interface = interfaces[i];
+      //var opt = document.createElement("option");
+      //opt.value = interface.address;
+      //opt.innerText = interface.name + " - " + interface.address;
+      //hosts.appendChild(opt);
     }
-  });
+  });*/
 }
 
 
@@ -185,41 +215,7 @@ onload = function() {
     fileReader.readAsArrayBuffer(file);*/
   //};
 
-  var onAccept = function(acceptInfo) {
-    console.log("ACCEPT", acceptInfo)
-    //  Read in the data
-    socket.read(acceptInfo.socketId, function(readInfo) {
-      console.log("READ", readInfo);
-      // Parse the request.
-      var data = arrayBufferToString(readInfo.data);
-      console.log("the data is: ",readInfo.data);
-      if(data.indexOf("GET ") == 0) {
-        // we can only deal with GET requests
-        var uriEnd =  data.indexOf(" ", 4);
-        if(uriEnd < 0) { /* throw a wobbler */ return; }
-        var uri = data.substring(4, uriEnd);
-        console.log('uri is: ' + uri);
-        var file = {
-            type: 'text/plain',
-            data: "hello, world :)"
-        };
-        /*if(!!file == false) { 
-            serve.err();
-          //console.warn("File does not exist..."); 
-          //writeErrorResponse(acceptInfo.socketId, 404); /* File does not exist */ 
-          //return; 
-        //}*/
-        //logToScreen("GET 200 " + uri);
-        //write200Response(acceptInfo.socketId, file);
-        serve.write(acceptInfo.socketId,file);
-      }
-      else {
-        // Throw an error
-        throw "wtf";
-        socket.destroy(acceptInfo.socketId); 
-      }
-    }); 
-  };
+  
 
   /*directory.onchange = function(e) {
     if(socketInfo) socket.destroy(socketInfo.socketId);

@@ -9,5 +9,7 @@
     },
     "icons": {
         "16": "icon.png"
-    }
+    },
+    "manifest_version": 2,
+    "permissions": ["experimental", {"socket":["tcp-connect", "tcp-listen"]}]
 }

@@ -4,9 +4,3 @@ chrome.app.runtime.onLaunched.addListener(function() {
         height: 500
     });
 });
-
-
-
-spoke({
-    'asdf'
-});

@@ -118,4 +118,3 @@ chrome.app(spokeId).sendMessage({
 }, function(data,cb) {
     serve(data);
 });
-
