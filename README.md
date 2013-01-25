@@ -13,11 +13,11 @@ Primary clearing house. Include payload and verb/object stuff and spoke ought to
 Where __message__ is like:
 
 ```javascript
-    {
-        verb: string,
-        noun: string
-        data: (any)
-    }
+{
+    verb: string,
+    noun: string
+    data: (any)
+}
 ```
 
 ###spoke.register
@@ -27,12 +27,12 @@ Where __message__ is like:
 Where __handler__ is like:
 
 ```javascript
-    {
-        verb: string,
-        noun: string,
-        handler: function
-    }
+{
+    verb: string,
+    noun: string,
+    handler: function
+}
 ```
-    
-How to register a handler
+
+Function can be 
 
