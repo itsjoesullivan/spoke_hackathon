@@ -30,15 +30,16 @@ Where __handler__ is like:
 {
     verb: string,
     noun: string,
-    handler: function
+    id: string
 }
 ```
 
-###What a handler gives/gets
+##What a handler gives/gets
 Function can be whatever you want, I guess. Well, actually that would be problematic.
 
 Let's assume that the cross-app-messaging API looks like:
 
+###Sending a message
 ```javascript
 chrome.app(id).sendMessage(data, cb);
 ```
@@ -49,14 +50,15 @@ Where:
 - __cb__ is a function that receives "response" argument
 
 
+###Listening for messages
 ```javascript
-chrome.app.onMessage.addListener()
-chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
-    if (request.greeting == "hello")
-      sendResponse({farewell: "goodbye"});
-  });
+chrome.app.onMessage.addListener(listener)
+```
+
+Where __listener__ looks like:
+
+```javascript
+function(request,sender) {
+    ...
+}
 ```
