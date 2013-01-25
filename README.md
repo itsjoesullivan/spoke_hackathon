@@ -1,5 +1,5 @@
 #Spoke
-Inter-app communication shim
+Inter-app communication shim for Chrome apps.
 
 
 ##API
@@ -58,7 +58,63 @@ chrome.app.onMessage.addListener(listener)
 Where __listener__ looks like:
 
 ```javascript
-function(request,sender) {
+function(data,cb) {
     ...
 }
 ```
+
+Note that the listener doesn't receive the id of the sender. Does that make sense? Don't really know.
+
+##Case study: IDE
+
+Imagine three apps: 
+- text editor (vim)
+- source control (source)
+- dev. server (serve)
+
+```javascript
+chrome.app(spokeId).sendMessage({
+    verb: 'edit',
+    noun: 'text',
+    id: vimId
+},function(data,cb) {
+    vim.open(data);
+    vim.save = function(data) {
+        cb(data);
+    }
+});
+```
+
+Register __source__ to handle "open" requests
+```javascript
+chrome.app(spokeId).sendMessage({
+    verb: 'open',
+    noun: '*',
+    id: sourceId
+}, function(data,cb) {
+    var file = source.open(data);
+    cb(file);
+});
+```
+
+Register __source__ to handle "save" requests
+```javascript
+chrome.app(spokeId).sendMessage({
+    verb: 'save',
+    noun: '*',
+    id: sourceId
+}, function(data,cb) {
+    source.save(data, cb);
+});
+```
+
+Register __serve__ to handle "serve" requests
+```javascript
+chrome.app(spokeId).sendMessage({
+    verb: 'serve',
+    noun: '*',
+    id: serveId
+}, function(data,cb) {
+    serve(data);
+});
+
