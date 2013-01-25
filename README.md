@@ -70,7 +70,7 @@ Note that the listener doesn't receive the id of the sender. Does that make sens
 Imagine three apps: 
 - text editor (vim)
 - source control (source)
-- dev. server (serve)
+- development server (serve)
 
 Register __vim__ to handle "edit" requests
 ```javascript
