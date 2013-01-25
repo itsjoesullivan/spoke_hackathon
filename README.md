@@ -72,6 +72,7 @@ Imagine three apps:
 - source control (source)
 - dev. server (serve)
 
+Register __vim__ to handle "edit" requests
 ```javascript
 chrome.app(spokeId).sendMessage({
     verb: 'edit',
