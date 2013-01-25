@@ -1,20 +1,43 @@
 <!doctype html>
 <html>
     <head>
-        
+        <title>vim</title>
+        <link rel="stylesheet" type="text/css" href="registry/vim/style.css" />
+    <!--link href='http://fonts.googleapis.com/css?family=Inconsolata:700' rel='stylesheet' type='text/css'-->
     </head>
+
     <body>
-        Hello, world :)
-        <button id="vim">vim</button>
-        <button id="serve">serve</button>
-        <button id="source">source</button>
+    
+        <div class="doc"></div>
+        <pre class="command"></pre>
         
+
+<script src="registry/vim/src/lib/underscore.js"></script>
+<script src="registry/vim/src/lib/jquery.js"></script>
+<script src="registry/vim/src/lib/backbone.js"></script>
+<script src="registry/vim/src/lib/json2html.js"></script>
+<script src="registry/vim/src/util.js"></script>
+<script src="registry/vim/src/commands.js"></script>
+<script src="registry/vim/src/cursor.js"></script>
+<script src="registry/vim/src/char.js"></script>
+<script src="registry/vim/src/line.js"></script>
+<script src="registry/vim/src/doc.js"></script>
+<script src="registry/vim/src/core.js"></script>
+<script src="registry/vim/src/modes/idle.js"></script>
+<script src="registry/vim/src/modes/insert.js"></script>
+<script src="registry/vim/src/modes/search.js"></script>
+<script src="registry/vim/src/modes/visual.js"></script>
+<script src="registry/vim/src/modes/command.js"></script>
+<script src="registry/vim/src/modes/default.js"></script>
+<script src="registry/vim/src/init.js"></script>
+
         
-        <!-- lib -->
-        <script src="lib/underscore.js"></script>
+        <!--script src="vim.js"></script-->
         
-        <!-- services -->
-        <script src="registry/serve/index.js"></script>
+        <!-- /vim -->
+        
+<!-- services -->
+        <script src="registry/serve/serve.js"></script>
         <script src="registry/source/lib/clone.js"></script>
         <script src="registry/source/lib/diff.js"></script>
         <script src="registry/source/source.js"></script>
@@ -24,6 +47,6 @@
         
         <!-- demo -->
         <script src="demo.js"></script>
-        
+
     </body>
 </html>
