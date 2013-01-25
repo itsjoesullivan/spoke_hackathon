@@ -16,13 +16,24 @@ Where __message__ is like:
     {
         verb: string,
         noun: string
-        data: any
+        data: (any)
     }
-        
 ```
 
 ###spoke.register
 
     spoke.register(handler);
     
+Where __handler__ is like:
+
+```javascript
+    {
+        verb: string,
+        noun: string,
+        handler: function
+    }
+
+
+    
 How to register a handler
+
