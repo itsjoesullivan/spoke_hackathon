@@ -32,8 +32,7 @@ Where __handler__ is like:
         noun: string,
         handler: function
     }
-
-
+```
     
 How to register a handler
 
