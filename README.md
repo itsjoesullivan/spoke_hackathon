@@ -72,19 +72,6 @@ Imagine three apps:
 - source control (source)
 - development server (serve)
 
-Register __vim__ to handle "edit" requests
-```javascript
-chrome.app(spokeId).sendMessage({
-    verb: 'edit',
-    noun: 'text',
-    id: vimId
-},function(data,cb) {
-    vim.open(data);
-    vim.save = function(data) {
-        cb(data);
-    }
-});
-```
 
 Register __source__ to handle "open" requests
 ```javascript
@@ -109,7 +96,25 @@ chrome.app(spokeId).sendMessage({
 });
 ```
 
+Register __vim__ to handle "edit" requests
+N.B. this one wasn't implemented, partially because at the last minute I dumped vim into the main window because I couldn't figure out a way to launch vim otherwise.
+```javascript
+chrome.app(spokeId).sendMessage({
+    verb: 'edit',
+    noun: 'text',
+    id: vimId
+},function(data,cb) {
+    vim.open(data);
+    vim.save = function(data) {
+        cb(data);
+    }
+});
+```
+
+
+
 Register __serve__ to handle "serve" requests
+Note: I don't think that this one makes any sense in retrospect, unless spoke was handling some low-level aspect of the tcp stuff.
 ```javascript
 chrome.app(spokeId).sendMessage({
     verb: 'serve',
@@ -118,3 +123,4 @@ chrome.app(spokeId).sendMessage({
 }, function(data,cb) {
     serve(data);
 });
+```
